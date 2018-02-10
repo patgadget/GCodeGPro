@@ -30,11 +30,12 @@ public class TextField {
   public int recSizeX;
   public int recSizeY;
   public boolean mouseOverField;
+  public boolean fInFocus;
   public String fieldValueTxt;
   
   
   TextField (int s_typeField, int xText, int yText, String s_txt, int s_recStartX, int s_recStartY,int s_recSizeX,int s_recSizeY,
-  boolean s_mouseOverField, String s_fieldValueTxt) {
+  boolean s_mouseOverField, boolean s_fInFocus, String s_fieldValueTxt) {
     typeField = s_typeField;
     x = xText;
     y = yText;
@@ -44,16 +45,18 @@ public class TextField {
     recSizeX = s_recSizeX;
     recSizeY = s_recSizeY;
     mouseOverField = s_mouseOverField;
+    fInFocus = s_fInFocus;
     fieldValueTxt = fieldValueTxt; 
   }
 }
   TextField c[] = {
-    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, ""), 
-    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, ""), 
-    new TextField(0,20,60,"Field3",             X_POS,50, 80,RECT_HEIGHT, false, ""), 
-    new TextField(0,20,80,"Field4",             X_POS,70, 80,RECT_HEIGHT, false, ""), 
-    new TextField(0,20,100,"Field5",            X_POS,90, 80,RECT_HEIGHT, false, ""), 
-    new TextField(0,20,120,"Field6",            X_POS,110,80,RECT_HEIGHT, false, ""), 
+    // Type, X, Y, Text, Xpos of Rec, YPos of rec, Rec Width, Rec Height, OverMouse, InFocus, Text Enter
+    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, false, ""), 
+    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, false, ""), 
+    new TextField(0,20,60,"Field3",             X_POS,50, 80,RECT_HEIGHT, false, false, ""), 
+    new TextField(0,20,80,"Field4",             X_POS,70, 80,RECT_HEIGHT, false, false, ""), 
+    new TextField(0,20,100,"Field5",            X_POS,90, 80,RECT_HEIGHT, false, false, ""), 
+    new TextField(0,20,120,"Field6",            X_POS,110,80,RECT_HEIGHT, false, false, ""), 
   };
 
   
