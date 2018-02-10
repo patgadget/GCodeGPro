@@ -46,7 +46,7 @@ public class TextField {
     recSizeY = s_recSizeY;
     mouseOverField = s_mouseOverField;
     fInFocus = s_fInFocus;
-    fieldValueTxt = fieldValueTxt; 
+    fieldValueTxt = s_fieldValueTxt; 
   }
 }
   TextField c[] = {
@@ -95,17 +95,16 @@ void draw() {
   switch (state) {
   case 0:
     fill(255); 
+    stroke(255);
     for (int i=0 ; i<c.length;i++){
-      if (boolean (c[i].fieldValueTxt))
-        text (c[i].txt, c[i].x, c[i].y);
-      stroke(255);
       rect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY);
-      println(c[i].txt);
+      if (c[i].fieldValueTxt != "")
+        text (c[i].fieldValueTxt, c[i].x, c[i].y);
     }
     break;
  
   case 1:
-    fill(255, 2, 2); 
+    //fill(255, 2, 2); 
     text ("Thanks \n"+result,0,15); 
     break;
   }
@@ -135,11 +134,32 @@ void keyPressed() {
  
     state++;
   } else   if (key==' ') {
+    for (int i=0 ; i<c.length;i++){
+      print("id: "+i);
+      print(","+c[i].typeField);
+      print(","+c[i].txt);
+      print(","+c[i].mouseOverField);
+      print(","+c[i].fInFocus);
+      print(","+c[i].fieldValueTxt);
+      println();
+    }
+
   }else
   for ( int i=0 ; i< c.length ; i++){
-    c[i].fieldValueTxt = c[i].fieldValueTxt + key;
+    if (c[i].fInFocus) {
+      c[i].fieldValueTxt = c[i].fieldValueTxt + key;
+    }
   }
   result = result + key;
+}
+
+void mousePressed() {
+  for ( int i=0 ; i< c.length ; i++){
+    if (c[i].mouseOverField) {
+      c[i].fInFocus = true;
+    }else 
+      c[i].fInFocus = false;
+  }
 }
 
 void update(int x, int y) {
