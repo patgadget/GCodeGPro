@@ -32,10 +32,12 @@ public class TextField {
   public boolean mouseOverField;
   public boolean fInFocus;
   public String fieldValueTxt;
+  public int xFieldTxt;
+  public int yFieldTxt;
   
   
   TextField (int s_typeField, int xText, int yText, String s_txt, int s_recStartX, int s_recStartY,int s_recSizeX,int s_recSizeY,
-  boolean s_mouseOverField, boolean s_fInFocus, String s_fieldValueTxt) {
+  boolean s_mouseOverField, boolean s_fInFocus, String s_fieldValueTxt, int s_xFieldTxt, int s_yFieldTxt) {
     typeField = s_typeField;
     x = xText;
     y = yText;
@@ -47,26 +49,24 @@ public class TextField {
     mouseOverField = s_mouseOverField;
     fInFocus = s_fInFocus;
     fieldValueTxt = s_fieldValueTxt; 
+    xFieldTxt = s_xFieldTxt;
+    yFieldTxt = s_yFieldTxt;
   }
 }
   TextField c[] = {
     // Type, X, Y, Text, Xpos of Rec, YPos of rec, Rec Width, Rec Height, OverMouse, InFocus, Text Enter
-    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, false, ""), 
-    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, false, ""), 
-    new TextField(0,20,60,"Field3",             X_POS,50, 80,RECT_HEIGHT, false, false, ""), 
-    new TextField(0,20,80,"Field4",             X_POS,70, 80,RECT_HEIGHT, false, false, ""), 
-    new TextField(0,20,100,"Field5",            X_POS,90, 80,RECT_HEIGHT, false, false, ""), 
-    new TextField(0,20,120,"Field6",            X_POS,110,80,RECT_HEIGHT, false, false, ""), 
+    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, false, "", X_POS+5, 22 ), 
+    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, false, "", X_POS+5, 42 ), 
+    new TextField(0,20,60,"Field3",             X_POS,50, 80,RECT_HEIGHT, false, false, "", X_POS+5, 62 ), 
+    new TextField(0,20,80,"Field4",             X_POS,70, 80,RECT_HEIGHT, false, false, "", X_POS+5, 82 ), 
+    new TextField(0,20,100,"Field5",            X_POS,90, 80,RECT_HEIGHT, false, false, "", X_POS+5, 102 ), 
+    new TextField(0,20,120,"Field6",            X_POS,110,80,RECT_HEIGHT, false, false, "", X_POS+5, 122 ), 
   };
 
   
 
  
 void setup() {
-  //for (int i=0 ; i<c.length;i++){
-    //text ("Tool Diameter :"+result, 15,15);
-  //  println(c[i].txt);
-  // }
   println(c.length);
   size(800, 800);
   rectColor = color(0);
@@ -80,26 +80,30 @@ void setup() {
   rectX = width/2-rectSize-10;
   rectY = height/2-rectSize/2;
   ellipseMode(CENTER);
-  
-
 }
  
 void draw() { 
  
   update(mouseX, mouseY);
   background(currentColor);
- 
-  //background(127); 
- 
- 
   switch (state) {
   case 0:
     fill(255); 
     stroke(255);
     for (int i=0 ; i<c.length;i++){
+     if (c[i].mouseOverField) {
+       fill(rectHighlight);
+     } else {
+      fill(rectColor);
+     }
+
       rect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY);
-      if (c[i].fieldValueTxt != "")
-        text (c[i].fieldValueTxt, c[i].x, c[i].y);
+
+
+      if (c[i].fieldValueTxt != ""){
+        fill (255);
+        text (c[i].fieldValueTxt, c[i].xFieldTxt, c[i].yFieldTxt);
+      }
     }
     break;
  
@@ -107,17 +111,13 @@ void draw() {
     //fill(255, 2, 2); 
     text ("Thanks \n"+result,0,15); 
     break;
-  }
   
-  for ( int i=0 ; i< c.length ; i++){
-  if (c[i].mouseOverField) {
-    fill(rectHighlight);
-  } else {
-    fill(rectColor);
-  }
-  stroke(255);
-      rect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY);
-  }
+  
+  //for ( int i=0 ; i< c.length ; i++){
+ // }
+ // stroke(255);
+//      rect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY);
+//  }
   
   //if (circleOver) {
   //  fill(circleHighlight);
@@ -125,7 +125,8 @@ void draw() {
   //  fill(circleColor);
   //}
   //stroke(0);
-  //ellipse(circleX, circleY, circleSize, circleSize);  
+  //ellipse(circleX, circleY, circleSize, circleSize);
+  }
 }
  
 void keyPressed() {
