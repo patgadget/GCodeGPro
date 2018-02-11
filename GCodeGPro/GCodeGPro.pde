@@ -1,5 +1,5 @@
 
-final int RECT_HEIGHT = 15;
+final int RECT_HEIGHT = 16;
 final int X_POS = 160;
 int rectX, rectY;      // Position of square button
 int circleX, circleY;  // Position of circle button
@@ -55,12 +55,12 @@ public class TextField {
 }
   TextField c[] = {
     // Type, X, Y, Text, Xpos of Rec, YPos of rec, Rec Width, Rec Height, OverMouse, InFocus, Text Enter
-    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, false, "", X_POS+5, 22 ), 
-    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, false, "", X_POS+5, 42 ), 
-    new TextField(0,20,60,"Field3",             X_POS,50, 80,RECT_HEIGHT, false, false, "", X_POS+5, 62 ), 
-    new TextField(0,20,80,"Field4",             X_POS,70, 80,RECT_HEIGHT, false, false, "", X_POS+5, 82 ), 
-    new TextField(0,20,100,"Field5",            X_POS,90, 80,RECT_HEIGHT, false, false, "", X_POS+5, 102 ), 
-    new TextField(0,20,120,"Field6",            X_POS,110,80,RECT_HEIGHT, false, false, "", X_POS+5, 122 ), 
+    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, false, "", X_POS+5, 23 ), 
+    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, false, "", X_POS+5, 43 ), 
+    new TextField(0,20,60,"Max Depth Cut",      X_POS,50, 80,RECT_HEIGHT, false, false, "", X_POS+5, 63 ), 
+    new TextField(0,20,80,"Max Over Cut in %",  X_POS,70, 80,RECT_HEIGHT, false, false, "", X_POS+5, 83 ), 
+    new TextField(0,20,100,"Feed Rate",         X_POS,90, 80,RECT_HEIGHT, false, false, "", X_POS+5, 103 ), 
+    new TextField(0,20,120,"Field",            X_POS,110,80,RECT_HEIGHT, false, false, "", X_POS+5, 123 ), 
   };
 
   
@@ -91,19 +91,17 @@ void draw() {
     fill(255); 
     stroke(255);
     for (int i=0 ; i<c.length;i++){
-     if (c[i].mouseOverField) {
-       fill(rectHighlight);
-     } else {
-      fill(rectColor);
-     }
-
+      if (c[i].mouseOverField) {
+        fill(rectHighlight);
+      } else {
+        fill(rectColor);
+      }
       rect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY);
-
-
+      fill (255);
       if (c[i].fieldValueTxt != ""){
-        fill (255);
         text (c[i].fieldValueTxt, c[i].xFieldTxt, c[i].yFieldTxt);
       }
+      text (c[i].txt, c[i].x, c[i].y);
     }
     break;
  
@@ -144,6 +142,8 @@ void keyPressed() {
       print(","+c[i].fieldValueTxt);
       println();
     }
+      println ("Total ="+(Float.parseFloat(c[0].fieldValueTxt) + Float.parseFloat(c[1].fieldValueTxt)));
+
 
   }else
   for ( int i=0 ; i< c.length ; i++){
