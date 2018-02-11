@@ -1,5 +1,6 @@
 
 final int RECT_HEIGHT = 16;
+final int RECT_WIDTH = 80;
 final int X_POS = 160;
 int rectX, rectY;      // Position of square button
 int circleX, circleY;  // Position of circle button
@@ -55,19 +56,21 @@ public class TextField {
 }
   TextField c[] = {
     // Type, X, Y, Text, Xpos of Rec, YPos of rec, Rec Width, Rec Height, OverMouse, InFocus, Text Enter
-    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, 80,RECT_HEIGHT, false, false, "", X_POS+5, 23 ), 
-    new TextField(0,20,40,"Diameter of Pocket:",X_POS,30, 80,RECT_HEIGHT, false, false, "", X_POS+5, 43 ), 
-    new TextField(0,20,60,"Max Depth Cut",      X_POS,50, 80,RECT_HEIGHT, false, false, "", X_POS+5, 63 ), 
-    new TextField(0,20,80,"Max Over Cut in %",  X_POS,70, 80,RECT_HEIGHT, false, false, "", X_POS+5, 83 ), 
-    new TextField(0,20,100,"Feed Rate",         X_POS,90, 80,RECT_HEIGHT, false, false, "", X_POS+5, 103 ), 
-    new TextField(0,20,120,"Field",            X_POS,110,80,RECT_HEIGHT, false, false, "", X_POS+5, 123 ), 
+    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 23 ), 
+    new TextField(0,20,40,"Pull Off Z:",        X_POS,30, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 43 ), 
+    new TextField(0,20,60,"Diameter of Pocket:",X_POS,50, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 63 ), 
+    new TextField(0,20,80,"Depth of Pocket",    X_POS,70, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 83 ), 
+    new TextField(0,20,100,"Max Over Cut in %", X_POS,90, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 103 ), 
+    new TextField(0,20,120,"Feed Rate",         X_POS,110,RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 123 ), 
+    new TextField(1,210,218,"START:",             210,  218,60        ,25         , false, false, "START", 200    , 200 ), 
+    
   };
 
   
 
  
 void setup() {
-  println(c.length);
+  //println(c.length);
   size(800, 800);
   rectColor = color(0);
   rectHighlight = color(51);
@@ -103,6 +106,27 @@ void draw() {
       }
       text (c[i].txt, c[i].x, c[i].y);
     }
+    for (int i=0 ; i<c.length;i++){
+      if (c[i].typeField == 1) {
+        if (c[i].mouseOverField) {
+          // Analyse Data
+        }
+        if (c[i].fInFocus) {
+          // Start GCode
+          println("F"+c[5].fieldValueTxt);
+          println("G0 Z"+c[1].fieldValueTxt);
+          println("G2 "+c[1].fieldValueTxt);
+          
+          c[i].fInFocus = false; // Stop Program
+        }
+      }
+    }
+    
+    // Draw the Start Button
+    //fill (rectColor);
+    //rect(200, 200, 60, 25);
+    //fill (255);
+    //text ("START", 210,218);
     break;
  
   case 1:
