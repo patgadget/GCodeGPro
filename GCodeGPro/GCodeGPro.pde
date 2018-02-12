@@ -14,11 +14,14 @@ int state = 0;
 String result=""; 
 
 
-float toolDiameter = 0.125;
-float insidePocket = 1;
+float toolDiameter;
+float insideDiameterMinusHalfTool;
+float pocketDiameter;
+float residualDiamInsidePocket;
+float percentToolDiameter;
 boolean inch = true;
 boolean rectOver = false;
-
+boolean lastResidual = false;
  
 
 public class TextField {
@@ -56,12 +59,12 @@ public class TextField {
 }
   TextField c[] = {
     // Type, X, Y, Text, Xpos of Rec, YPos of rec, Rec Width, Rec Height, OverMouse, InFocus, Text Enter
-    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 23 ), 
-    new TextField(0,20,40,"Pull Off Z:",        X_POS,30, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 43 ), 
-    new TextField(0,20,60,"Diameter of Pocket:",X_POS,50, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 63 ), 
-    new TextField(0,20,80,"Depth of Pocket",    X_POS,70, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 83 ), 
-    new TextField(0,20,100,"Max Over Cut in %", X_POS,90, RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 103 ), 
-    new TextField(0,20,120,"Feed Rate",         X_POS,110,RECT_WIDTH,RECT_HEIGHT, false, false, "", X_POS+5, 123 ), 
+    new TextField(0,20,20,"Tool Diameter:",     X_POS,10, RECT_WIDTH,RECT_HEIGHT, false, false, "18", X_POS+5, 23 ), 
+    new TextField(0,20,40,"Pull Off Z:",        X_POS,30, RECT_WIDTH,RECT_HEIGHT, false, false, "5", X_POS+5, 43 ), 
+    new TextField(0,20,60,"Diameter of Pocket:",X_POS,50, RECT_WIDTH,RECT_HEIGHT, false, false, "100", X_POS+5, 63 ), 
+    new TextField(0,20,80,"Depth of Pocket",    X_POS,70, RECT_WIDTH,RECT_HEIGHT, false, false, "80", X_POS+5, 83 ), 
+    new TextField(0,20,100,"Max Over Cut in %", X_POS,90, RECT_WIDTH,RECT_HEIGHT, false, false, "15", X_POS+5, 103 ), 
+    new TextField(0,20,120,"Feed Rate",         X_POS,110,RECT_WIDTH,RECT_HEIGHT, false, false, "1000", X_POS+5, 123 ), 
     new TextField(1,210,218,"START:",             210,  218,60        ,25         , false, false, "START", 200    , 200 ), 
     
   };
@@ -113,10 +116,41 @@ void draw() {
         }
         if (c[i].fInFocus) {
           // Start GCode
+          toolDiameter = Float.parseFloat(c[0].fieldValueTxt);
+          percentToolDiameter = Float.parseFloat(c[4].fieldValueTxt);
+          pocketDiameter = Float.parseFloat(c[2].fieldValueTxt);
+          insideDiameterMinusHalfTool = pocketDiameter-(toolDiameter/2);
+          //println("PocketDiameter:"+pocketDiameter);
+          //println("Inside Diameter:"+insideDiameterMinusHalfTool);
+            
+          residualDiamInsidePocket = insideDiameterMinusHalfTool;
           println("F"+c[5].fieldValueTxt);
           println("G0 Z"+c[1].fieldValueTxt);
-          println("G2 "+c[1].fieldValueTxt);
+          println("G0 X0 Y"+String.valueOf(insideDiameterMinusHalfTool/2));
+          println("G0 Z0");
+          lastResidual = true;
+          while (lastResidual){
+            if (residualDiamInsidePocket > (0.90 * toolDiameter)) {
+              lastResidual = true;
+            }else {
+              lastResidual = false;
+            }
+            if (residualDiamInsidePocket > 0){
+              println("G1 X0 Y"+String.valueOf(residualDiamInsidePocket/2));
+              println("G2 X0 Y-"+String.valueOf(residualDiamInsidePocket/2)+" I0 J-"+String.valueOf(residualDiamInsidePocket/2));
+              println("G2 X0 Y"+String.valueOf(residualDiamInsidePocket/2)+" I0 J"+String.valueOf(residualDiamInsidePocket/2));
+            }else {
+              println("G1 X0 Y0");
+            }
+            
+            residualDiamInsidePocket = residualDiamInsidePocket - (percentToolDiameter/100 * toolDiameter * 2);
+            if (residualDiamInsidePocket < 0 )
+              residualDiamInsidePocket = 0;
+            // println("residualDiamInsidePocket:"+residualDiamInsidePocket);
+            // println("Tool Diameter:"+toolDiameter);
+          }
           
+          //String.valueOf();
           c[i].fInFocus = false; // Stop Program
         }
       }
