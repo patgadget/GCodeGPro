@@ -141,12 +141,19 @@ void draw() {
           println("G0 Z0");
           lastResidualDepth = true;
           while (lastResidualDepth){
-            //if (accumDepthPocket >= depthPocket) {
-            //  lastResidualDepth = true;
-            //}else {
-            //  lastResidualDepth = false;
-            //}
+            accumDepthPocket = accumDepthPocket + depthIncrease;
+            if (accumDepthPocket > depthPocket){
+              accumDepthPocket = depthPocket;
+            }
 
+            if (accumDepthPocket < depthPocket){
+              println("G1 Z-"+String.valueOf(accumDepthPocket));
+            }else {
+              println("G1 Z-"+String.valueOf(depthPocket));
+              lastResidualDepth = false;
+            }
+            
+            // Surface Machining at each depth
             lastResidualDiam = true;
             residualDiamInsidePocket = insideDiameterMinusHalfTool;
             while (lastResidualDiam){
@@ -167,17 +174,6 @@ void draw() {
                 residualDiamInsidePocket = 0;
                 // println("residualDiamInsidePocket:"+residualDiamInsidePocket);
                 // println("Tool Diameter:"+toolDiameter);
-              
-            }
-            if (accumDepthPocket < depthPocket){
-              println("G1 Z-"+String.valueOf(accumDepthPocket));
-            }else {
-              println("G1 Z-"+String.valueOf(depthPocket));
-              lastResidualDepth = false;
-            }
-            accumDepthPocket = accumDepthPocket + depthIncrease;
-            if (accumDepthPocket > depthPocket){
-              accumDepthPocket = depthPocket;
               
             }
             
