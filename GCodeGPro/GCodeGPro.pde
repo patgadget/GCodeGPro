@@ -89,11 +89,12 @@ void setup() {
 }
  
 void draw() { 
- 
   update(mouseX, mouseY);
   background(currentColor);
   switch (state) {
   case 0:
+    pushMatrix();
+    //translate (40,40);
     fill(255); 
     stroke(255);
     for (int i=0 ; i<c.length;i++){
@@ -109,6 +110,7 @@ void draw() {
       }
       text (c[i].txt, c[i].x, c[i].y);
     }
+    popMatrix();
     for (int i=0 ; i<c.length;i++){
       if (c[i].typeField == 1) {
         if (c[i].mouseOverField) {
@@ -150,38 +152,17 @@ void draw() {
             // println("Tool Diameter:"+toolDiameter);
           }
           
-          //String.valueOf();
           c[i].fInFocus = false; // Stop Program
         }
       }
     }
     
-    // Draw the Start Button
-    //fill (rectColor);
-    //rect(200, 200, 60, 25);
-    //fill (255);
-    //text ("START", 210,218);
     break;
  
   case 1:
     //fill(255, 2, 2); 
     text ("Thanks \n"+result,0,15); 
     break;
-  
-  
-  //for ( int i=0 ; i< c.length ; i++){
- // }
- // stroke(255);
-//      rect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY);
-//  }
-  
-  //if (circleOver) {
-  //  fill(circleHighlight);
-  //} else {
-  //  fill(circleColor);
-  //}
-  //stroke(0);
-  //ellipse(circleX, circleY, circleSize, circleSize);
   }
 }
  
@@ -201,8 +182,6 @@ void keyPressed() {
       println();
     }
       println ("Total ="+(Float.parseFloat(c[0].fieldValueTxt) + Float.parseFloat(c[1].fieldValueTxt)));
-
-
   }else
   for ( int i=0 ; i< c.length ; i++){
     if (c[i].fInFocus) {
@@ -221,15 +200,12 @@ void mousePressed() {
   }
 }
 
+
+// Check if the mouse is over the Rec and set the Over Field bit
 void update(int x, int y) {
-  //if ( overCircle(circleX, circleY, circleSize) ) {
-  //  circleOver = true;
-  //  rectOver = false;
-  //} else
   for (int i=0;i<c.length;i++){
     if ( overRect(c[i].recStartX, c[i].recStartY, c[i].recSizeX, c[i].recSizeY) ) {
       c[i].mouseOverField = true;
-      //circleOver = false;
     } 
     else {
       c[i].mouseOverField = false;
@@ -245,14 +221,3 @@ boolean overRect(int x, int y, int width, int height)  {
     return false;
   }
 }
-/*
-boolean overCircle(int x, int y, int diameter) {
-  float disX = x - mouseX;
-  float disY = y - mouseY;
-  if (sqrt(sq(disX) + sq(disY)) < diameter/2 ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-*/
